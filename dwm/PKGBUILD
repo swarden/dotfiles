@@ -1,0 +1,48 @@
+# $Id$
+# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor: Dag Odenhall <dag.odenhall@gmail.com>
+# Contributor: Grigorios Bouzakis <grbzks@gmail.com>
+
+pkgname=dwm
+pkgver=6.1
+pkgrel=3
+pkgdesc="A dynamic window manager for X"
+url="http://dwm.suckless.org"
+arch=('i686' 'x86_64')
+license=('MIT')
+options=(zipman)
+depends=('libx11' 'libxinerama' 'libxft' 'freetype2' 'dmenu')
+install=dwm.install
+source=(http://dl.suckless.org/dwm/dwm-$pkgver.tar.gz
+	config.h
+	dwm.desktop
+        https://dwm.suckless.org/patches/fancybar/dwm-fancybar-6.1.diff	
+	https://dwm.suckless.org/patches/systray/dwm-6.1-systray.diff
+	https://dwm.suckless.org/patches/center/dwm-center-6.1.diff)
+md5sums=('f0b6b1093b7207f89c2a90b848c008ec'
+         '9610df547cf1529b63179420e8f0b2a9'
+         '939f403a71b6e85261d09fc3412269ee'
+         'd86b8d135e3d3e40d69a8f04bfb537fa'
+         'd1dfe1d57e2a3c338bba13c079156999'
+         '2b5e7d2e45c9ea86b56487007569081c')
+
+prepare() {
+  cd $srcdir/$pkgname-$pkgver
+  cp $srcdir/config.h config.h
+  patch -p1 < ../dwm-fancybar-6.1.diff
+  patch -p1 < ../dwm-6.1-systray.diff
+  patch -p1 < ../dwm-center-6.1.diff
+}
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+  make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11 FREETYPEINC=/usr/include/freetype2
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
+  make PREFIX=/usr DESTDIR=$pkgdir install
+  install -m644 -D LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  install -m644 -D README $pkgdir/usr/share/doc/$pkgname/README
+  install -m644 -D $srcdir/dwm.desktop $pkgdir/usr/share/xsessions/dwm.desktop
+}
