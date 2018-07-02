@@ -1,7 +1,4 @@
-pipeline {
-  agent any
-  
-  properties([
+properties([
             disableConcurrentBuilds(),
             parameters([
                     [$class: 'GitParameterDefinition',
@@ -29,8 +26,10 @@ pipeline {
                             numToKeepStr: '20'
                     )
             )
-  ])
-  
+])
+
+pipeline {
+  agent any
   stages {
     stage('Checkout') {
       steps {
