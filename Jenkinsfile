@@ -1,3 +1,5 @@
+def repo = 'https://github.com/swarden/dotfiles'
+
 properties([
             disableConcurrentBuilds(),
             parameters([
@@ -33,7 +35,18 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git(url: 'https://github.com/swarden/dotfiles', branch: '${BRANCH_NAME}', changelog: true, poll: true)
+            timestamps {
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '${BRANCH_NAME}']],
+                          doGenerateSubmoduleConfigurations: false,
+                          extensions: [],
+                          submoduleCfg: [],
+                          userRemoteConfigs: [[
+                                                      // credentialsId: "${creds}",
+                                                      url: "${repo}"
+                                              ]]
+                ])
+            }
       }
     }
     stage('Show folders') {
