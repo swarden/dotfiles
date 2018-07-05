@@ -33,31 +33,31 @@ properties([
 pipeline {
     agent any
     stages {
-//        stage('Checkout') {
-//            steps {
-//                timestamps {
-//                    checkout([$class: 'GitSCM',
-//                              branches: [[name: '${BRANCH_NAME}']],
-//                              doGenerateSubmoduleConfigurations: false,
-//                              extensions: [],
-//                              submoduleCfg: [],
-//                              userRemoteConfigs: [[
-//                                                          // credentialsId: "${creds}",
-//                                                          url: "${repo}"
-//                                                  ]]
-//                    ])
-//                }
-//            }
-//        }
+        stage('Checkout') {
+            steps {
+                timestamps {
+                    checkout([$class: 'GitSCM',
+                              branches: [[name: '${BRANCH_NAME}']],
+                              doGenerateSubmoduleConfigurations: false,
+                              extensions: [],
+                              submoduleCfg: [],
+                              userRemoteConfigs: [[
+                                                          // credentialsId: "${creds}",
+                                                          url: "${repo}"
+                                                  ]]
+                    ])
+                }
+            }
+        }
         stage('Show folders') {
             steps {
                 sh 'ls -lisah'
             }
         }
-        stage('Approove') {
-            steps {
-                input(message: 'Done?', id: 'swarden', ok: 'OKAY', submitter: 'swarden')
-            }
-        }
+//        stage('Approove') {
+//            steps {
+//                input(message: 'Done?', id: 'swarden', ok: 'OKAY', submitter: 'swarden')
+//            }
+//        }
     }
 }
