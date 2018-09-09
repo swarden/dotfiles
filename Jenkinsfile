@@ -1,63 +1,15 @@
-def repo = 'https://github.com/swarden/dotfiles'
+#!groovy
 
-properties([
-        disableConcurrentBuilds(),
-        parameters([
-                [$class: 'GitParameterDefinition',
-                 branch: '',
-                 branchFilter: '.*',
-                 defaultValue: '', // тут обычно sprint или Sprint бранчи.
-                 description: 'Chose branch for build.',
-                 name: 'BRANCH_NAME', // Переменная которая прописывается в SCM
-                 quickFilterEnabled: false,
-                 selectedValue: 'NONE',
-                 sortMode: 'NONE',
-                 tagFilter: '*',
-                 type: 'PT_BRANCH'] // можно указать PT_BRANCH для бранчей или PT_TAG для тэгов.
-        ]),
-        // Каждые две минуты проверяет репо на наличие обновлений и билдит
-        pipelineTriggers([
-                pollSCM('*/2 * * * *')
-        ]),
-        // оставляет 20 сборок хранить
-        buildDiscarder(
-                logRotator(
-                        artifactDaysToKeepStr: '',
-                        artifactNumToKeepStr: '',
-                        daysToKeepStr: '',
-                        numToKeepStr: '20'
-                )
-        )
-])
+def var=0
 
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Test') {
             steps {
-                timestamps {
-                    checkout([$class: 'GitSCM',
-                              branches: [[name: '${BRANCH_NAME}']],
-                              doGenerateSubmoduleConfigurations: false,
-                              extensions: [],
-                              submoduleCfg: [],
-                              userRemoteConfigs: [[
-                                                          // credentialsId: "${creds}",
-                                                          url: "${repo}"
-                                                  ]]
-                    ])
-                }
+                echo "${env.BRANCH_NAME}"
+                sh "printenv"
             }
         }
-        stage('Show folders') {
-            steps {
-                sh 'ls -lisah'
-            }
-        }
-//        stage('Approove') {
-//            steps {
-//                input(message: 'Done?', id: 'swarden', ok: 'OKAY', submitter: 'swarden')
-//            }
-//        }
     }
 }
