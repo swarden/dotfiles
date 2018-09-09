@@ -9,6 +9,7 @@ pipeline {
             steps {
                 echo "${env.BRANCH_NAME}"
                 sh "printenv"
+                echo "Validate PR"
             }
         }
     }
