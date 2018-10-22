@@ -1,0 +1,24 @@
+stages:
+- name: Build
+  steps:
+  - runScriptConfig:
+      image: base/archlinux
+      shellScript: cd dwm && makepkg -fis --skipchecksums
+- name: Push
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: test
+      registry: 127.0.0.1:34963
+- name: Deploy
+  steps:
+  - runScriptConfig:
+      image: ubuntu:16.04
+      shellScript: echo "Done!"
+timeout: 60
+branch:
+  include:
+  - master
+  exclude:
+  - PR*
