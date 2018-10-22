@@ -3,7 +3,10 @@ stages:
   steps:
   - runScriptConfig:
       image: base/archlinux
-      shellScript: pacman -S base-devel --noconfirm && cd dwm && ls -lisah
+      shellScript: |-
+        pacman -S base-devel --noconfirm
+        cd dwm
+        ls -lisah
 timeout: 60
 branch:
   include:
