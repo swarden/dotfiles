@@ -3,14 +3,7 @@ stages:
   steps:
   - runScriptConfig:
       image: base/archlinux
-      user: www-data
-      shellScript: make
-
-- name: Deploy
-  steps:
-  - runScriptConfig:
-      image: ubuntu:16.04
-      shellScript: echo "Done!"
+      shellScript: pacman -S base-devel --noconfirm && cd dwm && ls -lisah
 timeout: 60
 branch:
   include:
