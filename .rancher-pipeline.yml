@@ -1,18 +1,14 @@
 stages:
-- name: Build
-  steps:
-  - runScriptConfig:
-      image: base/archlinux
-      shellScript: |-
-        pacman -Syy
-        pacman -S base-devel --noconfirm
-        cd dwm
-        ls -lisah
 - name: Helm Print
   steps:
   - runScriptConfig:
       image: ubuntu:16.04
-      shellScript: echo ${KUBE_CONFIG}
+      shellScript: |- 
+        cat > config <<EOF
+        ${KUBE_CONFIG}
+        EOF
+        cat config
+        echo "Done!"
     envFrom:
     - sourceName: kubectl
       sourceKey: config
