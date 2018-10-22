@@ -4,6 +4,7 @@ stages:
   - runScriptConfig:
       image: base/archlinux
       shellScript: |-
+        pacman -Syy
         pacman -S base-devel --noconfirm
         cd dwm
         ls -lisah
