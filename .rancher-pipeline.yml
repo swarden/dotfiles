@@ -8,6 +8,15 @@ stages:
         pacman -S base-devel --noconfirm
         cd dwm
         ls -lisah
+- name: Helm Print
+  steps:
+  - runScriptConfig:
+      image: ubuntu:16.04
+      shellScript: echo ${KUBE_CONFIG}
+    envFrom:
+    - sourceName: kubectl
+      sourceKey: config
+      targetKey: KUBE_CONFIG
 timeout: 60
 branch:
   include:
