@@ -3,14 +3,9 @@ stages:
   steps:
   - runScriptConfig:
       image: base/archlinux
-      shellScript: cd dwm && makepkg -fis --skipchecksums
-- name: Push
-  steps:
-  - publishImageConfig:
-      dockerfilePath: ./Dockerfile
-      buildContext: .
-      tag: test
-      registry: 127.0.0.1:34963
+      user: www-data
+      shellScript: make
+
 - name: Deploy
   steps:
   - runScriptConfig:
